@@ -7,9 +7,9 @@
 
 (defun read-operand (operand-type)
   (ecase operand-type
-    (#.+operand-type-word+ (fetch-u16))
-    (#.+operand-type-byte+ (fetch-u8))
-    (#.+operand-type-var+ (read-var (fetch-u8)))))
+    (0 (fetch-u16))
+    (1 (fetch-u8))
+    (2 (read-var (fetch-u8)))))
 
 (defun decode-operand-types (b)
   (loop for pos from 6 downto 0 by 2
