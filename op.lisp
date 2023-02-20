@@ -133,7 +133,8 @@
   (write-var var (1- (read-signed-var var))))
 
 (def-op (:1op #x07 "print-addr") (addr)
-  (princ (decode-text addr)))
+  (let ((s (decode-text addr)))
+    (write-sequence s *standard-output*)))
 
 (def-op (:1op #x09 "remove-obj") (obj)
   (obj-remove obj))
@@ -148,7 +149,8 @@
   (incf *pc* (- (u16->s16 offset) 2)))
 
 (def-op (:1op #x0d "print-paddr") (addr)
-  (princ (decode-text (* addr 2))))
+  (let ((s (decode-text (* addr 2))))
+    (write-sequence s *standard-output*)))
 
 (def-op (:1op #x0e "load" :store t) (var)
   (when (zerop var)
@@ -170,7 +172,7 @@
 
 (def-op (:0op #x02 "print") ()
   (multiple-value-bind (s byte-len) (decode-text *pc*)
-    (princ s)
+    (write-sequence s *standard-output*)
     (incf *pc* byte-len)))
 
 (def-op (:0op #x03 "print-ret") ()
